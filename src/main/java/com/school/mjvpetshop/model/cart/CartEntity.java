@@ -1,13 +1,27 @@
 package com.school.mjvpetshop.model.cart;
 
-import com.school.mjvpetshop.model.cartItem.CartItem;
+import com.school.mjvpetshop.model.cartItem.CartItemEntity;
+import com.school.mjvpetshop.model.customer.CustomerEntity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 
+@Entity(name = "cart")
 public class CartEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private Set<CartItem> items;
+
+    @OneToMany(mappedBy = "cartId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<CartItemEntity> items;
+
+    @Column(name = "total")
     private BigDecimal totalShopValue;
+
+    @OneToOne(mappedBy = "cart")
+    private CustomerEntity customer;
 
 }
