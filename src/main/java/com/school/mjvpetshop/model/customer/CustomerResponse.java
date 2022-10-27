@@ -1,7 +1,12 @@
 package com.school.mjvpetshop.model.customer;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
+@Getter
+@Setter
 public class CustomerResponse {
     private Long id;
     private String fullName;
