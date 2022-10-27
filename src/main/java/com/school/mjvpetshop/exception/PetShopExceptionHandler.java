@@ -22,5 +22,26 @@ public class PetShopExceptionHandler {
         return new ResponseEntity<>(apiException, notFound);
     }
 
+    @ExceptionHandler(value = InvalidCustomerCpfException.class)
+    public ResponseEntity<Object> handleInvalidCustomerCpfException(InvalidCustomerCpfException e) {
+        HttpStatus unprocessableEntity = HttpStatus.UNPROCESSABLE_ENTITY;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                unprocessableEntity,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, unprocessableEntity);
+    }
+
+    @ExceptionHandler(value = CustomerAlreadyExistsException.class)
+    public ResponseEntity<Object> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
 
 }
