@@ -20,6 +20,9 @@ public class ProductEntity {
     @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "inventory")
+    private BigDecimal inventory;
+
     @Column(name = "creation_date")
     private ZonedDateTime creationDate;
 
