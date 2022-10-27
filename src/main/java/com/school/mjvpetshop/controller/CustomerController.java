@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/customers")
 @RequiredArgsConstructor
@@ -25,6 +27,12 @@ public class CustomerController {
     public ResponseEntity<CustomerResponse> findCustomerById(@PathVariable Long id) {
         CustomerResponse response = customerService.findCustomerById(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CustomerResponse>> findAllCustomers() {
+        List<CustomerResponse> responses = customerService.findAllCustomers();
+        return ResponseEntity.ok(responses);
     }
 
 
