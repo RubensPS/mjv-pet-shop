@@ -10,7 +10,6 @@ public class CartItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
