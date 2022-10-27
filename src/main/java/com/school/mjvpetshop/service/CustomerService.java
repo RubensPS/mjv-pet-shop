@@ -9,6 +9,8 @@ import com.school.mjvpetshop.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -23,6 +25,10 @@ public class CustomerService {
     public CustomerResponse findCustomerById(Long id) {
         CustomerEntity entity = customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException("A customer with the provided ID doesn't exist in the database."));
         return CustomerDtoConversion.entityToResponse(entity);
+    }
+
+    public List<CustomerResponse> findAllCustomers() {
+        return customerRepository.findAll().stream().map(CustomerDtoConversion::entityToResponse).toList();
     }
 
 }
