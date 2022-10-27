@@ -4,11 +4,9 @@ import com.school.mjvpetshop.model.customer.CustomerRequest;
 import com.school.mjvpetshop.model.customer.CustomerResponse;
 import com.school.mjvpetshop.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customers")
@@ -20,6 +18,12 @@ public class CustomerController {
     @PostMapping("/save")
     public ResponseEntity<CustomerResponse> saveNewCustomer(@RequestBody CustomerRequest request) {
         CustomerResponse response = customerService.saveNewCustomer(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerResponse> findCustomerById(@PathVariable Long id) {
+        CustomerResponse response = customerService.findCustomerById(id);
         return ResponseEntity.ok(response);
     }
 
