@@ -13,14 +13,13 @@ public class PetShopExceptionHandler {
 
     @ExceptionHandler(value = CustomerNotFoundException.class)
     public ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFoundException e) {
-        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
         PetShopApiException apiException = new PetShopApiException(
                 e.getMessage(),
-                e,
-                badRequest,
+                notFound,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
-        return new ResponseEntity<>(apiException, badRequest);
+        return new ResponseEntity<>(apiException, notFound);
     }
 
 
