@@ -2,16 +2,26 @@ package com.school.mjvpetshop.model.customer;
 
 import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.telephone.TelephoneEntity;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "customer")
+@Entity
+@Table(name = "customer")
+@Getter
+@Setter
+@NoArgsConstructor
 public class CustomerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(name = "full_name")
@@ -24,7 +34,7 @@ public class CustomerEntity {
     private String cpf;
 
     @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<TelephoneEntity> phoneNumber;
+    private List<TelephoneEntity> phoneNumbers;
 
     @Column(name = "email")
     private String email;
@@ -38,5 +48,16 @@ public class CustomerEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private CartEntity cart;
+
+
+    public CustomerEntity(CustomerRequest request) {
+        this.fullName = request.getFullName();
+        this.userName = request.getUserName();
+        this.cpf = request.getCpf();
+        this.phoneNumbers = new ArrayList<>();
+        this.email = request.getEmail();
+        this.creationDate = request.getCreationDate();
+        this.updateDate = request.getUpdateDate();
+    }
 
 }
