@@ -1,5 +1,6 @@
 package com.school.mjvpetshop.controller;
 
+import com.school.mjvpetshop.exception.InvalidCustomerCpfException;
 import com.school.mjvpetshop.model.customer.CustomerRequest;
 import com.school.mjvpetshop.model.customer.CustomerResponse;
 import com.school.mjvpetshop.service.CustomerService;
@@ -18,7 +19,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("/save")
-    public ResponseEntity<CustomerResponse> saveNewCustomer(@RequestBody CustomerRequest request) {
+    public ResponseEntity<CustomerResponse> saveNewCustomer(@RequestBody CustomerRequest request) throws InvalidCustomerCpfException {
         CustomerResponse response = customerService.saveNewCustomer(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
