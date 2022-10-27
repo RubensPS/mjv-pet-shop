@@ -56,8 +56,8 @@ public class CustomerEntity {
         this.cpf = request.getCpf();
         this.phoneNumbers = new ArrayList<>();
         this.email = request.getEmail();
-        this.creationDate = request.getCreationDate();
-        this.updateDate = request.getUpdateDate();
+        this.creationDate = ZonedDateTime.now();
+        this.updateDate = ZonedDateTime.now();
     }
 
 }
