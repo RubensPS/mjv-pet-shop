@@ -1,11 +1,14 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.CustomerDtoConversion;
+import com.school.mjvpetshop.exception.CustomerAlreadyExistsException;
 import com.school.mjvpetshop.exception.CustomerNotFoundException;
+import com.school.mjvpetshop.exception.InvalidCustomerCpfException;
 import com.school.mjvpetshop.model.customer.CustomerEntity;
 import com.school.mjvpetshop.model.customer.CustomerRequest;
 import com.school.mjvpetshop.model.customer.CustomerResponse;
 import com.school.mjvpetshop.repository.CustomerRepository;
+import com.school.mjvpetshop.utilities.PetShopFieldValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,12 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public CustomerResponse saveNewCustomer(CustomerRequest request) {
+    public CustomerResponse saveNewCustomer(CustomerRequest request) throws InvalidCustomerCpfException {
+        request.setCpf(PetShopFieldValidator.formatCpf(request.getCpf()));
+        if (!PetShopFieldValidator.checkCpf(request.getCpf()))
+            throw new InvalidCustomerCpfException("The cpf must contain 11 digits.");
+        if (customerRepository.existsByCpfAndUserNameAndEmail(request.getCpf(), request.getUserName(), request.getEmail()))
+            throw new CustomerAlreadyExistsException("Cpf, userName or email already in database.");
         CustomerEntity entity = CustomerDtoConversion.requestToEntity(request);
         return CustomerDtoConversion.entityToResponse(customerRepository.save(entity));
     }
