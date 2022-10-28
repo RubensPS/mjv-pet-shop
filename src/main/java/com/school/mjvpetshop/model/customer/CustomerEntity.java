@@ -58,6 +58,7 @@ public class CustomerEntity {
         this.email = request.getEmail();
         this.creationDate = ZonedDateTime.now();
         this.updateDate = ZonedDateTime.now();
+        this.cart = new CartEntity();
     }
 
 }
