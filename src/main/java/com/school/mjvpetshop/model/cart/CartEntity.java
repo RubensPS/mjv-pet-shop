@@ -1,7 +1,6 @@
 package com.school.mjvpetshop.model.cart;
 
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
-import com.school.mjvpetshop.model.customer.CustomerEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,8 +18,5 @@ public class CartEntity {
 
     @Column(name = "total")
     private BigDecimal totalShopValue;
-
-    @OneToOne(mappedBy = "cart")
-    private CustomerEntity customer;
 
 }
