@@ -66,4 +66,15 @@ public class PetShopExceptionHandler {
         return new ResponseEntity<>(apiException, badRequest);
     }
 
+    @ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
 }
