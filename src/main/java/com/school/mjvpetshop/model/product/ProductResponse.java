@@ -1,8 +1,13 @@
 package com.school.mjvpetshop.model.product;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+@Setter
+@Getter
 public class ProductResponse {
 
     private Long id;
