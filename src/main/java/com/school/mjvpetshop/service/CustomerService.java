@@ -25,7 +25,7 @@ public class CustomerService {
         request.setCpf(PetShopFieldValidator.formatCpf(request.getCpf()));
         if (!PetShopFieldValidator.checkCpf(request.getCpf()))
             throw new InvalidCustomerCpfException("The cpf must contain 11 digits.");
-        if (customerRepository.existsByCpfAndUserNameAndEmail(request.getCpf(), request.getUserName(), request.getEmail()))
+        if (customerRepository.existsByCpf(request.getCpf()) || customerRepository.existsByUserName(request.getUserName()) || customerRepository.existsByEmail(request.getEmail()))
             throw new CustomerAlreadyExistsException("Cpf, userName or email already in database.");
         CustomerEntity entity = CustomerDtoConversion.requestToEntity(request);
         return CustomerDtoConversion.entityToResponse(customerRepository.save(entity));
