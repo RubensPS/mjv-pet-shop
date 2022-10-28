@@ -32,7 +32,8 @@ public class CustomerService {
     }
 
     public CustomerResponse findCustomerById(Long id) {
-        CustomerEntity entity = customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException("A customer with the provided ID doesn't exist in the database."));
+        CustomerEntity entity = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("A customer with the provided ID doesn't exist in the database."));
         return CustomerDtoConversion.entityToResponse(entity);
     }
 
@@ -46,4 +47,13 @@ public class CustomerService {
         return ResponseEntity.ok("The customer was deleted from the database.");
     }
 
+    public CustomerResponse updateCustomer(Long id, CustomerRequest request) throws InvalidCustomerCpfException {
+        request.setCpf(PetShopFieldValidator.formatCpf(request.getCpf()));
+        if (!PetShopFieldValidator.checkCpf(request.getCpf()))
+            throw new InvalidCustomerCpfException("The cpf must contain 11 digits.");
+        CustomerEntity entity = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException("A customer with the provided ID doesn't exist in the database."));
+        CustomerEntity updatedEntity = CustomerDtoConversion.updateEntity(entity, request);
+        return CustomerDtoConversion.entityToResponse(customerRepository.save(updatedEntity));
+    }
 }
