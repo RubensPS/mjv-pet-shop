@@ -50,12 +50,12 @@ public class CustomerEntity {
     private CartEntity cart;
 
 
-    public CustomerEntity(CustomerRequest request) {
-        this.fullName = request.getFullName();
-        this.userName = request.getUserName();
-        this.cpf = request.getCpf();
+    public CustomerEntity(String fullName, String userName, String cpf, String email) {
+        this.fullName = fullName;
+        this.userName = userName;
+        this.cpf = cpf;
         this.phoneNumbers = new ArrayList<>();
-        this.email = request.getEmail();
+        this.email = email;
         this.creationDate = ZonedDateTime.now();
         this.updateDate = ZonedDateTime.now();
         this.cart = new CartEntity();

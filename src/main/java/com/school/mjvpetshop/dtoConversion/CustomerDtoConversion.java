@@ -9,11 +9,11 @@ import java.time.ZonedDateTime;
 public class CustomerDtoConversion {
 
     public static CustomerEntity requestToEntity(CustomerRequest request) {
-        return new CustomerEntity(request);
+        return new CustomerEntity(request.getFullName(), request.getUserName(), request.getCpf(), request.getEmail());
     }
 
     public static CustomerResponse entityToResponse(CustomerEntity entity) {
-        return new CustomerResponse(entity);
+        return new CustomerResponse(entity.getId(), entity.getFullName(), entity.getUserName(), entity.getCpf(), entity.getEmail(), entity.getCreationDate(), entity.getUpdateDate());
     }
 
     public static CustomerEntity updateEntity(CustomerEntity entity, CustomerRequest request) {

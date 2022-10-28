@@ -16,13 +16,13 @@ public class CustomerResponse {
     private ZonedDateTime creationDate;
     private ZonedDateTime updateDate;
 
-    public CustomerResponse(CustomerEntity entity) {
-        this.id = entity.getId();
-        this.fullName = entity.getFullName();
-        this.userName = entity.getUserName();
-        this.cpf = entity.getCpf();
-        this.email = entity.getEmail();
-        this.creationDate = entity.getCreationDate();
-        this.updateDate = entity.getUpdateDate();
+    public CustomerResponse(Long id, String fullName, String userName, String cpf, String email, ZonedDateTime creationDate, ZonedDateTime updateDate) {
+        this.id = id;
+        this.fullName = fullName;
+        this.userName = userName;
+        this.cpf = cpf;
+        this.email = email;
+        this.creationDate = creationDate;
+        this.updateDate = updateDate;
     }
 }
