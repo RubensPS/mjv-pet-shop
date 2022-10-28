@@ -45,8 +45,8 @@ public class CustomerEntity {
     @Column(name = "update_date")
     private ZonedDateTime updateDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private CartEntity cart;
 
 
