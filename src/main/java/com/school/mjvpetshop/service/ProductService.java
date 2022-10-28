@@ -28,4 +28,10 @@ public class ProductService {
         return ProductDtoConversion.entityToResponse(entity);
     }
 
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
+        ProductEntity entity = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("A product with the provided ID doesn't exist in the database."));
+        ProductEntity updatedEntity = ProductDtoConversion.updateEntity(entity, request);
+        return ProductDtoConversion.entityToResponse(productRepository.save(updatedEntity));
+    }
+
 }
