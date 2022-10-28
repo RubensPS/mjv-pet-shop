@@ -4,6 +4,7 @@ import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "cart")
@@ -18,5 +19,10 @@ public class CartEntity {
 
     @Column(name = "total")
     private BigDecimal totalShopValue;
+
+    public CartEntity() {
+        this.items = new HashSet<>();
+        this.totalShopValue = BigDecimal.ZERO;
+    }
 
 }
