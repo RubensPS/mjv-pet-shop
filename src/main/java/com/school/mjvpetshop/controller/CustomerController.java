@@ -41,4 +41,10 @@ public class CustomerController {
         return customerService.deleteCustomer(id);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerResponse> updateCustomer(@PathVariable Long id, @RequestBody CustomerRequest request) throws InvalidCustomerCpfException {
+        CustomerResponse response = customerService.updateCustomer(id, request);
+        return ResponseEntity.ok(response);
+    }
+
 }
