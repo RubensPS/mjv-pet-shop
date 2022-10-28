@@ -15,8 +15,9 @@ public class CustomerResponse {
     private String email;
     private ZonedDateTime creationDate;
     private ZonedDateTime updateDate;
+    private Long cartId;
 
-    public CustomerResponse(Long id, String fullName, String userName, String cpf, String email, ZonedDateTime creationDate, ZonedDateTime updateDate) {
+    public CustomerResponse(Long id, String fullName, String userName, String cpf, String email, ZonedDateTime creationDate, ZonedDateTime updateDate, Long cartId) {
         this.id = id;
         this.fullName = fullName;
         this.userName = userName;
@@ -24,5 +25,6 @@ public class CustomerResponse {
         this.email = email;
         this.creationDate = creationDate;
         this.updateDate = updateDate;
+        this.cartId = cartId;
     }
 }

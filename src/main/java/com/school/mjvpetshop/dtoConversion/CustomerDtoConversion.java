@@ -13,7 +13,15 @@ public class CustomerDtoConversion {
     }
 
     public static CustomerResponse entityToResponse(CustomerEntity entity) {
-        return new CustomerResponse(entity.getId(), entity.getFullName(), entity.getUserName(), entity.getCpf(), entity.getEmail(), entity.getCreationDate(), entity.getUpdateDate());
+        return new CustomerResponse(
+                entity.getId(),
+                entity.getFullName(),
+                entity.getUserName(),
+                entity.getCpf(),
+                entity.getEmail(),
+                entity.getCreationDate(),
+                entity.getUpdateDate(),
+                entity.getCart().getId());
     }
 
     public static CustomerEntity updateEntity(CustomerEntity entity, CustomerRequest request) {
