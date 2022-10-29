@@ -88,4 +88,15 @@ public class PetShopExceptionHandler {
         return new ResponseEntity<>(apiException, badRequest);
     }
 
+    @ExceptionHandler(value = InsuficientInventoryException.class)
+    public ResponseEntity<Object> handleInsuficientInventoryException(InsuficientInventoryException e) {
+        HttpStatus conflict = HttpStatus.CONFLICT;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                conflict,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, conflict);
+    }
+
 }

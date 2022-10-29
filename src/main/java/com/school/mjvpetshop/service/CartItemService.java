@@ -3,6 +3,7 @@ package com.school.mjvpetshop.service;
 import com.school.mjvpetshop.dtoConversion.CartItemDtoConversion;
 import com.school.mjvpetshop.exception.CartItemAlreadyExistsException;
 import com.school.mjvpetshop.exception.CartNotFoundException;
+import com.school.mjvpetshop.exception.InsuficientInventoryException;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.cartItem.CartItemRequest;
 import com.school.mjvpetshop.model.cartItem.CartItemResponse;
@@ -26,6 +27,8 @@ public class CartItemService {
         ProductEntity product = productService.getProductEntity(request.getProductId());
         if (cartItemRepository.existsByCartIdAndProduct(request.getCartId(), product))
             throw new CartItemAlreadyExistsException("The item is already in the cart.");
+        if(request.getQuantity().compareTo(product.getInventory()) < 0)
+            throw new InsuficientInventoryException("There's not enough items in the inventory to be sold.");
         CartItemEntity entity = cartItemRepository.save(CartItemDtoConversion.requestToEntity(request, product));
         cartService.updateTotal(request.getCartId());
         return CartItemDtoConversion.entityToResponse(entity);
