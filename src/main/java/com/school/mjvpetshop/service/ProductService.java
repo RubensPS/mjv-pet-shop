@@ -34,4 +34,8 @@ public class ProductService {
         return ProductDtoConversion.entityToResponse(productRepository.save(updatedEntity));
     }
 
+    public ProductEntity getProductEntity(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("A product with the provided ID doesn't exist in the database."));
+    }
+
 }
