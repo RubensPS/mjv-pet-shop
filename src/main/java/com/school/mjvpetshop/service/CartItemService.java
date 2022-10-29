@@ -27,7 +27,7 @@ public class CartItemService {
         ProductEntity product = productService.getProductEntity(request.getProductId());
         if (cartItemRepository.existsByCartIdAndProduct(request.getCartId(), product))
             throw new CartItemAlreadyExistsException("The item is already in the cart.");
-        if(request.getQuantity().compareTo(product.getInventory()) < 0)
+        if(request.getQuantity().compareTo(product.getInventory()) > 0)
             throw new InsuficientInventoryException("There's not enough items in the inventory to be sold.");
         CartItemEntity entity = cartItemRepository.save(CartItemDtoConversion.requestToEntity(request, product));
         cartService.updateTotal(request.getCartId());

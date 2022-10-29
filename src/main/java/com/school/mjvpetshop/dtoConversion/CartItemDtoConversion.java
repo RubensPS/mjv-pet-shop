@@ -12,7 +12,7 @@ public class CartItemDtoConversion {
     }
 
     public static CartItemResponse entityToResponse(CartItemEntity entity) {
-        return new CartItemResponse(entity.getId(), entity.getQuantity());
+        return new CartItemResponse(entity.getProduct(), entity.getQuantity());
     }
 
 }
