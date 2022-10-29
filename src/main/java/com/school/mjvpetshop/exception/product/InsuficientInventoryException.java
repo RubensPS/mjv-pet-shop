@@ -1,4 +1,4 @@
-package com.school.mjvpetshop.exception;
+package com.school.mjvpetshop.exception.product;
 
 public class InsuficientInventoryException extends RuntimeException{
     public InsuficientInventoryException(String returnMessage) {

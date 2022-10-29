@@ -1,4 +1,4 @@
-package com.school.mjvpetshop.exception;
+package com.school.mjvpetshop.exception.customer;
 
 import java.util.zip.DataFormatException;
 

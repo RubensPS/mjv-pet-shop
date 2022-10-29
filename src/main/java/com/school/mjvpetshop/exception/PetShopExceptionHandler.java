@@ -1,5 +1,13 @@
 package com.school.mjvpetshop.exception;
 
+import com.school.mjvpetshop.exception.cart.CartNotFoundException;
+import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
+import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
+import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
+import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
+import com.school.mjvpetshop.exception.product.InsuficientInventoryException;
+import com.school.mjvpetshop.exception.product.ProductAlreadyExistsException;
+import com.school.mjvpetshop.exception.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,4 +1,4 @@
-package com.school.mjvpetshop.exception;
+package com.school.mjvpetshop.exception.customer;
 
 public class CustomerAlreadyExistsException extends RuntimeException{
     public CustomerAlreadyExistsException(String message) {
