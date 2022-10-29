@@ -1,8 +1,8 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.ProductDtoConversion;
-import com.school.mjvpetshop.exception.ProductAlreadyExistsException;
-import com.school.mjvpetshop.exception.ProductNotFoundException;
+import com.school.mjvpetshop.exception.product.ProductAlreadyExistsException;
+import com.school.mjvpetshop.exception.product.ProductNotFoundException;
 import com.school.mjvpetshop.model.product.ProductEntity;
 import com.school.mjvpetshop.model.product.ProductRequest;
 import com.school.mjvpetshop.model.product.ProductResponse;
@@ -38,4 +38,7 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("A product with the provided ID doesn't exist in the database."));
     }
 
+    public Boolean checkProduct(Long productId) {
+        return productRepository.existsById(productId);
+    }
 }

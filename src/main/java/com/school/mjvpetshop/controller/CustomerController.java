@@ -1,6 +1,6 @@
 package com.school.mjvpetshop.controller;
 
-import com.school.mjvpetshop.exception.InvalidCustomerCpfException;
+import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
 import com.school.mjvpetshop.model.customer.CustomerRequest;
 import com.school.mjvpetshop.model.customer.CustomerResponse;
 import com.school.mjvpetshop.service.CustomerService;

@@ -1,16 +1,19 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.CartItemDtoConversion;
-import com.school.mjvpetshop.exception.CartItemAlreadyExistsException;
-import com.school.mjvpetshop.exception.CartNotFoundException;
-import com.school.mjvpetshop.exception.InsuficientInventoryException;
+import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
+import com.school.mjvpetshop.exception.cart.CartNotFoundException;
+import com.school.mjvpetshop.exception.product.InsuficientInventoryException;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.cartItem.CartItemRequest;
 import com.school.mjvpetshop.model.cartItem.CartItemResponse;
 import com.school.mjvpetshop.model.product.ProductEntity;
 import com.school.mjvpetshop.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class CartItemService {
     private final CartService cartService;
 
 
-    public CartItemResponse addItemToCart(CartItemRequest request) {
+    public CartItemResponse addItem(CartItemRequest request) {
         if(!cartService.checkCart(request.getCartId()))
             throw new CartNotFoundException("A cart with the provided ID doesn't exist in the database.");
         ProductEntity product = productService.getProductEntity(request.getProductId());
@@ -34,5 +37,13 @@ public class CartItemService {
         return CartItemDtoConversion.entityToResponse(entity);
     }
 
+    public ResponseEntity<String> removeItem(Long cartId, Long productId) {
+        if(!cartService.checkCart(cartId))
+            throw new CartNotFoundException("A cart with the provided ID doesn't exist in the database.");
+        ProductEntity product = productService.getProductEntity(productId);
+        Set<CartItemEntity> shopList = cartItemRepository.findAllByCartId(cartId);
+        shopList.stream().filter(elemMatch -> elemMatch.getProduct().getId().equals(productId)).forEach(cartItemRepository::delete);
+        return ResponseEntity.ok(String.format("%s removed from cart.", product.getName()));
+    }
 
 }

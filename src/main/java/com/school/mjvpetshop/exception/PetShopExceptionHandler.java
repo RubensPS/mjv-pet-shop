@@ -1,7 +1,9 @@
 package com.school.mjvpetshop.exception;
 
 import com.school.mjvpetshop.exception.cart.CartNotFoundException;
+import com.school.mjvpetshop.exception.cartItem.CartIdNotProvidedException;
 import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
+import com.school.mjvpetshop.exception.cartItem.ProductIdNotProvidedException;
 import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
 import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
 import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
@@ -105,6 +107,28 @@ public class PetShopExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(apiException, conflict);
+    }
+
+    @ExceptionHandler(value = CartIdNotProvidedException.class)
+    public ResponseEntity<Object> handleCartIdNotProvidedException(CartIdNotProvidedException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = ProductIdNotProvidedException.class)
+    public ResponseEntity<Object> handleProductIdNotProvidedException(ProductIdNotProvidedException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
     }
 
 }

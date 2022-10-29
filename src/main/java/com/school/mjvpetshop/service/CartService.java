@@ -1,8 +1,8 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.CartDtoConversion;
-import com.school.mjvpetshop.exception.CartNotFoundException;
-import com.school.mjvpetshop.exception.CartUpdateTotalValueException;
+import com.school.mjvpetshop.exception.cart.CartNotFoundException;
+import com.school.mjvpetshop.exception.cart.CartUpdateTotalValueException;
 import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.cart.CartResponse;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
