@@ -3,10 +3,11 @@ package com.school.mjvpetshop.exception;
 import java.util.NoSuchElementException;
 
 public class ProductNotFoundException extends NoSuchElementException {
-    public ProductNotFoundException(String s) {
+    public ProductNotFoundException(String message) {
+        super(message);
     }
 
-    public ProductNotFoundException(String s, Throwable cause) {
-        super(s, cause);
+    public ProductNotFoundException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
