@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
-@Entity(name = "product")
+@Entity
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
