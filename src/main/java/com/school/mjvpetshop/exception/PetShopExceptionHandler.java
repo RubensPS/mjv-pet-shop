@@ -77,4 +77,15 @@ public class PetShopExceptionHandler {
         return new ResponseEntity<>(apiException, notFound);
     }
 
+    @ExceptionHandler(value = CartItemAlreadyExistsException.class)
+    public ResponseEntity<Object> handleCartItemAlreadyExistsException(CartItemAlreadyExistsException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
 }
