@@ -45,8 +45,7 @@ public class CustomerEntity {
     @Column(name = "update_date")
     private ZonedDateTime updateDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @OneToOne(cascade=CascadeType.ALL)
     private CartEntity cart;
 
 
