@@ -3,6 +3,7 @@ package com.school.mjvpetshop.exception;
 import com.school.mjvpetshop.exception.cart.CartNotFoundException;
 import com.school.mjvpetshop.exception.cartItem.CartIdNotProvidedException;
 import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
+import com.school.mjvpetshop.exception.cartItem.CartItemNotFoundException;
 import com.school.mjvpetshop.exception.cartItem.ProductIdNotProvidedException;
 import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
 import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
@@ -129,6 +130,17 @@ public class PetShopExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = CartItemNotFoundException.class)
+    public ResponseEntity<Object> handleCartItemNotFoundException(CartItemNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, notFound);
     }
 
 }

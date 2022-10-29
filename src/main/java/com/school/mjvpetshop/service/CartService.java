@@ -34,8 +34,9 @@ public class CartService {
         cartRepository.save(entity);
     }
 
-    public boolean checkCart(Long id) {
-        return cartRepository.existsById(id);
+    public void checkCart(Long id) {
+        if(!cartRepository.existsById(id))
+            throw new CartNotFoundException("A cart with the provided ID doesn't exist in the database.");
     }
 
 }

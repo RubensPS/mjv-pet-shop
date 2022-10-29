@@ -38,7 +38,10 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("A product with the provided ID doesn't exist in the database."));
     }
 
-    public Boolean checkProduct(Long productId) {
-        return productRepository.existsById(productId);
+    public void checkProduct(Long productId) {
+        if (!productRepository.existsById(productId))
+            throw new ProductNotFoundException("A product with the provided ID doesn't exist in the database.");
+
     }
+
 }
