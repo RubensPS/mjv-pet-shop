@@ -2,13 +2,15 @@ package com.school.mjvpetshop.model.cart;
 
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "cart")
+@Entity
+@Table(name = "cart")
 @Getter
 public class CartEntity {
 
@@ -20,6 +22,7 @@ public class CartEntity {
     private Set<CartItemEntity> items;
 
     @Column(name = "total")
+    @Setter
     private BigDecimal totalShopValue;
 
     public CartEntity() {

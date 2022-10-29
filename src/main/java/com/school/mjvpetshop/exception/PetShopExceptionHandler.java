@@ -45,7 +45,7 @@ public class PetShopExceptionHandler {
     }
 
     @ExceptionHandler(value = CartNotFoundException.class)
-    public ResponseEntity<Object> handleCustomerNotFoundException(CartNotFoundException e) {
+    public ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException e) {
         HttpStatus notFound = HttpStatus.NOT_FOUND;
         PetShopApiException apiException = new PetShopApiException(
                 e.getMessage(),
@@ -53,6 +53,39 @@ public class PetShopExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(value = ProductAlreadyExistsException.class)
+    public ResponseEntity<Object> handleProductAlreadyExistsException(ProductAlreadyExistsException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(value = CartItemAlreadyExistsException.class)
+    public ResponseEntity<Object> handleCartItemAlreadyExistsException(CartItemAlreadyExistsException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
     }
 
 }
