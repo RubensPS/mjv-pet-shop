@@ -11,8 +11,12 @@ import com.school.mjvpetshop.repository.CartItemRepository;
 import com.school.mjvpetshop.repository.CartRepository;
 import com.school.mjvpetshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -69,7 +73,9 @@ public class ProductService {
         cartItemRepository.deleteAllById(cartItens);
     }
 
-    public List<ProductResponse> findAllProducts() {
-        return productRepository.findAll().stream().map(ProductDtoConversion::entityToResponse).toList();
+    public Page<ProductResponse> findAllProducts(Integer pageNumber, Integer pageSize, String sortBy) {
+        PageRequest request = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Page<ProductEntity> pageResult = productRepository.findAll(request);
+        return pageResult.map(ProductDtoConversion::entityToResponse);
     }
 }
