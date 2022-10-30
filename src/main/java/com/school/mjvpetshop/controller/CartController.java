@@ -18,4 +18,10 @@ public class CartController {
         CartResponse response = cartService.findCartById(id);
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/empty/{id}")
+    public ResponseEntity<CartResponse> emptyCart(@PathVariable Long id) {
+        CartResponse response = cartService.emptyCart(id);
+        return ResponseEntity.ok(response);
+    }
 }

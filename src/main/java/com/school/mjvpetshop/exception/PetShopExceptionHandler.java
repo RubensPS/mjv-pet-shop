@@ -1,6 +1,7 @@
 package com.school.mjvpetshop.exception;
 
 import com.school.mjvpetshop.exception.cart.CartNotFoundException;
+import com.school.mjvpetshop.exception.cart.EmptyCartException;
 import com.school.mjvpetshop.exception.cartItem.CartIdNotProvidedException;
 import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
 import com.school.mjvpetshop.exception.cartItem.CartItemNotFoundException;
@@ -141,6 +142,17 @@ public class PetShopExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(value = EmptyCartException.class)
+    public ResponseEntity<Object> handleEmptyCartException(EmptyCartException e) {
+        HttpStatus ok = HttpStatus.OK;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                ok,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, ok);
     }
 
 }

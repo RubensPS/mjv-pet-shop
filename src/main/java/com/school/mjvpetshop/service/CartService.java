@@ -3,6 +3,7 @@ package com.school.mjvpetshop.service;
 import com.school.mjvpetshop.dtoConversion.CartDtoConversion;
 import com.school.mjvpetshop.exception.cart.CartNotFoundException;
 import com.school.mjvpetshop.exception.cart.CartUpdateTotalValueException;
+import com.school.mjvpetshop.exception.cart.EmptyCartException;
 import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.cart.CartResponse;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -45,4 +48,11 @@ public class CartService {
             throw new CartNotFoundException("A cart with the provided ID doesn't exist in the database.");
     }
 
+    public CartResponse emptyCart(Long cartId) {
+        CartEntity entity = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
+        if (entity.getItems().isEmpty())
+            throw new EmptyCartException("The cart is already empty.");
+        entity.getItems().clear();
+        return CartDtoConversion.entityToResponse(cartRepository.save(entity));
+    }
 }
