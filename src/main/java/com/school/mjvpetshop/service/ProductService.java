@@ -13,7 +13,6 @@ import com.school.mjvpetshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -70,4 +69,7 @@ public class ProductService {
         cartItemRepository.deleteAllById(cartItens);
     }
 
+    public List<ProductResponse> findAllProducts() {
+        return productRepository.findAll().stream().map(ProductDtoConversion::entityToResponse).toList();
+    }
 }

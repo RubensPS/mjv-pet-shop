@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -36,6 +38,12 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProductResponse>> findAllProducts() {
+        List<ProductResponse> response = productService.findAllProducts();
+        return ResponseEntity.ok(response);
     }
 
 
