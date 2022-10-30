@@ -1,5 +1,6 @@
 package com.school.mjvpetshop.model.product;
 
+import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "products")

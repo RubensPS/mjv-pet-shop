@@ -1,5 +1,17 @@
 package com.school.mjvpetshop.exception;
 
+import com.school.mjvpetshop.exception.cart.CartNotFoundException;
+import com.school.mjvpetshop.exception.cart.EmptyCartException;
+import com.school.mjvpetshop.exception.cartItem.CartIdNotProvidedException;
+import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
+import com.school.mjvpetshop.exception.cartItem.CartItemNotFoundException;
+import com.school.mjvpetshop.exception.cartItem.ProductIdNotProvidedException;
+import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
+import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
+import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
+import com.school.mjvpetshop.exception.product.InsuficientInventoryException;
+import com.school.mjvpetshop.exception.product.ProductAlreadyExistsException;
+import com.school.mjvpetshop.exception.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -86,6 +98,61 @@ public class PetShopExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = InsuficientInventoryException.class)
+    public ResponseEntity<Object> handleInsuficientInventoryException(InsuficientInventoryException e) {
+        HttpStatus conflict = HttpStatus.CONFLICT;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                conflict,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, conflict);
+    }
+
+    @ExceptionHandler(value = CartIdNotProvidedException.class)
+    public ResponseEntity<Object> handleCartIdNotProvidedException(CartIdNotProvidedException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = ProductIdNotProvidedException.class)
+    public ResponseEntity<Object> handleProductIdNotProvidedException(ProductIdNotProvidedException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = CartItemNotFoundException.class)
+    public ResponseEntity<Object> handleCartItemNotFoundException(CartItemNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, notFound);
+    }
+
+    @ExceptionHandler(value = EmptyCartException.class)
+    public ResponseEntity<Object> handleEmptyCartException(EmptyCartException e) {
+        HttpStatus ok = HttpStatus.OK;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                ok,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, ok);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.school.mjvpetshop.exception;
+package com.school.mjvpetshop.exception.product;
 
 import java.util.NoSuchElementException;
 

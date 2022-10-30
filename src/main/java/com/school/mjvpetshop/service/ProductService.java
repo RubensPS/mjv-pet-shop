@@ -1,20 +1,32 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.ProductDtoConversion;
-import com.school.mjvpetshop.exception.ProductAlreadyExistsException;
-import com.school.mjvpetshop.exception.ProductNotFoundException;
+import com.school.mjvpetshop.exception.product.ProductAlreadyExistsException;
+import com.school.mjvpetshop.exception.product.ProductNotFoundException;
+import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.product.ProductEntity;
 import com.school.mjvpetshop.model.product.ProductRequest;
 import com.school.mjvpetshop.model.product.ProductResponse;
+import com.school.mjvpetshop.repository.CartItemRepository;
+import com.school.mjvpetshop.repository.CartRepository;
 import com.school.mjvpetshop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
+    private final CartRepository cartRepository;
 
     public ProductResponse saveNewProduct(ProductRequest request) {
         if (Boolean.TRUE.equals(productRepository.existsByName(request.getName())))
@@ -38,4 +50,32 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("A product with the provided ID doesn't exist in the database."));
     }
 
+    public ResponseEntity<String> deleteProduct(Long productId) {
+        checkProduct(productId);
+        List<Long> cartItens = findAllCartItemsByProductId(productId);
+        deleteAllCartItemsById(cartItens);
+        productRepository.deleteById(productId);
+        return ResponseEntity.ok("The product was deleted from database.");
+    }
+
+    public void checkProduct(Long productId) {
+        if (!productRepository.existsById(productId))
+            throw new ProductNotFoundException("A product with the provided ID doesn't exist in the database.");
+    }
+
+    public List<Long> findAllCartItemsByProductId(Long productId) {
+        return cartItemRepository.findAll()
+                .stream().filter(item -> item.getProduct().getId().equals(productId))
+                .map(CartItemEntity::getId).toList();
+    }
+
+    public void deleteAllCartItemsById(List<Long> cartItens) {
+        cartItemRepository.deleteAllById(cartItens);
+    }
+
+    public Page<ProductResponse> findAllProducts(Integer pageNumber, Integer pageSize, String sortBy) {
+        PageRequest request = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Page<ProductEntity> pageResult = productRepository.findAll(request);
+        return pageResult.map(ProductDtoConversion::entityToResponse);
+    }
 }

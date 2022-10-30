@@ -1,9 +1,9 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.CustomerDtoConversion;
-import com.school.mjvpetshop.exception.CustomerAlreadyExistsException;
-import com.school.mjvpetshop.exception.CustomerNotFoundException;
-import com.school.mjvpetshop.exception.InvalidCustomerCpfException;
+import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
+import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
+import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
 import com.school.mjvpetshop.model.customer.CustomerEntity;
 import com.school.mjvpetshop.model.customer.CustomerRequest;
 import com.school.mjvpetshop.model.customer.CustomerResponse;
