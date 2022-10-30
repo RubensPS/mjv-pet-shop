@@ -9,6 +9,6 @@ import java.util.Set;
 public interface CartItemRepository extends JpaRepository<CartItemEntity, Long> {
 
     Boolean existsByCartIdAndProduct(Long cartId, ProductEntity product);
-
+    void deleteAllByCartId(Long cartId);
     Set<CartItemEntity> findAllByCartId(Long cartId);
 }

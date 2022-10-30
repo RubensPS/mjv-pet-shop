@@ -7,20 +7,20 @@ import com.school.mjvpetshop.exception.cart.EmptyCartException;
 import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.cart.CartResponse;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
+import com.school.mjvpetshop.repository.CartItemRepository;
 import com.school.mjvpetshop.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Set;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     public CartResponse findCartById(Long cartId) {
         updateTotal(cartId);
@@ -49,10 +49,13 @@ public class CartService {
     }
 
     public CartResponse emptyCart(Long cartId) {
-        CartEntity entity = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
-        if (entity.getItems().isEmpty())
+        checkCart(cartId);
+        Set<CartItemEntity> cartItems = cartItemRepository.findAllByCartId(cartId);
+        if (cartItems.isEmpty()) {
             throw new EmptyCartException("The cart is already empty.");
-        entity.getItems().clear();
-        return CartDtoConversion.entityToResponse(cartRepository.save(entity));
+        }
+        cartItemRepository.deleteAll(cartItems);
+        updateTotal(cartId);
+        return findCartById(cartId);
     }
 }
