@@ -24,8 +24,8 @@ public class CartItemEntity {
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Long cartId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
 
     @Column(name = "quantity")

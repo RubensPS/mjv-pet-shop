@@ -19,14 +19,20 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    public CartResponse findCartById(Long id) {
-        CartEntity entity = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
+    public CartResponse findCartById(Long cartId) {
+        updateTotal(cartId);
+        CartEntity entity = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
         return CartDtoConversion.entityToResponse(entity);
     }
 
     public void updateTotal(Long cartId) {
         CartEntity entity = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
         Set<CartItemEntity> itemList = entity.getItems();
+        if (itemList.isEmpty()) {
+            entity.setTotalShopValue(BigDecimal.ZERO);
+            cartRepository.save(entity);
+            return;
+        }
         BigDecimal total = itemList.stream()
                 .map(item -> item.getProduct().getPrice().multiply(item.getQuantity()))
                 .reduce(BigDecimal::add).orElseThrow(() -> new CartUpdateTotalValueException("Cannot update cart items total value."));

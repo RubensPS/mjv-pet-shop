@@ -1,12 +1,12 @@
 package com.school.mjvpetshop.model.cart;
 
-import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.cartItem.CartItemResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class CartResponse {
     public CartResponse(Long id, Set<CartItemResponse> items, BigDecimal totalShopValue) {
         this.id = id;
         this.items = items;
-        this.totalShopValue = totalShopValue;
+        this.totalShopValue = totalShopValue.setScale(2, RoundingMode.HALF_EVEN);
     }
 
 

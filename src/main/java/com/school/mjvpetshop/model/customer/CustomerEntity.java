@@ -46,6 +46,7 @@ public class CustomerEntity {
     private ZonedDateTime updateDate;
 
     @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "carrinho_id")
     private CartEntity cart;
 
 

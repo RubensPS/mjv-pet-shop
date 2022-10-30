@@ -24,7 +24,6 @@ public class CartItemService {
     private final ProductService productService;
     private final CartService cartService;
 
-
     public CartItemResponse addItem(CartItemRequest request) {
         cartService.checkCart(request.getCartId());
         ProductEntity product = productService.getProductEntity(request.getProductId());
@@ -40,6 +39,11 @@ public class CartItemService {
         cartService.checkCart(cartId);
         ProductEntity product = productService.getProductEntity(productId);
         Set<CartItemEntity> shopList = cartItemRepository.findAllByCartId(cartId);
+        List<Long> productIdList = shopList
+                .stream().filter(item -> item.getProduct().getId().equals(productId))
+                .map(CartItemEntity::getId)
+                .toList();
+        checkCartItem(productIdList, String.format("CANNOT REMOVE ITEM: %s is not in the chart.", product.getName()));
         shopList.stream().filter(item -> item.getProduct().getId().equals(productId)).forEach(cartItemRepository::delete);
         cartService.updateTotal(cartId);
         return ResponseEntity.ok(String.format("%s removed from cart.", product.getName()));
@@ -52,7 +56,7 @@ public class CartItemService {
                 .stream().filter(item -> item.getProduct().getId().equals(request.getProductId()))
                 .map(CartItemEntity::getId)
                 .toList();
-        checkCartItem(shopList);
+        checkCartItem(shopList, "CANNOT UPDATE AMOUNT: the item is not in the cart.");
         Long cartItemId = shopList.get(0);
         CartItemEntity entity = cartItemRepository.findById(cartItemId).orElseThrow(() -> new CartItemNotFoundException("A cartItem with the provided ID doesn't exist in the database."));
         entity.setQuantity(request.getQuantity());
@@ -66,9 +70,9 @@ public class CartItemService {
             throw new InsuficientInventoryException("There's not enough items in the inventory to be sold.");
     }
 
-    public void checkCartItem(List<Long> shopList) {
+    public void checkCartItem(List<Long> shopList, String message) {
         if (shopList.isEmpty())
-            throw new CartItemNotFoundException("CANNOT UPDATE AMOUNT: the item is not in the cart.");
+            throw new CartItemNotFoundException(message);
     }
 
 }
