@@ -1,6 +1,7 @@
 package com.school.mjvpetshop.model.customer;
 
 import com.school.mjvpetshop.model.cart.CartEntity;
+import com.school.mjvpetshop.model.order.OrderEntity;
 import com.school.mjvpetshop.model.telephone.TelephoneEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,8 +47,11 @@ public class CustomerEntity {
     private ZonedDateTime updateDate;
 
     @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "carrinho_id")
+    @JoinColumn(name = "cart_id")
     private CartEntity cart;
+
+    @OneToMany(mappedBy = "customerId")
+    private List<OrderEntity> orderId;
 
 
     public CustomerEntity(String fullName, String userName, String cpf, String email) {

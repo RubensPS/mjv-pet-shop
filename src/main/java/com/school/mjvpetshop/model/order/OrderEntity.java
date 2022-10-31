@@ -1,6 +1,6 @@
 package com.school.mjvpetshop.model.order;
 
-import lombok.AccessLevel;
+import com.school.mjvpetshop.model.customer.CustomerEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_entity")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,30 +19,32 @@ public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customerId;
 
+    @Column(name = "creation_date")
     private ZonedDateTime creationDate;
 
+    @Column(name = "deliver_limit")
     private ZonedDateTime deliverDeadLine;
 
+    @Column(name = "deliver_status")
     private Boolean isDelivered;
 
     @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_id")
-    private List<OrderItemEntity> orderItens;
+    private List<OrderItemEntity> orderItems;
 
+    @Column(name = "total_cost")
     private BigDecimal totalOrderCost;
 
-    public OrderEntity(Long userId, List<OrderItemEntity> orderItens, BigDecimal totalOrderCost) {
-        this.userId = userId;
+    public OrderEntity(Long customerId) {
+        this.customerId = getCustomerId();
         this.creationDate = ZonedDateTime.now();
         this.deliverDeadLine = ZonedDateTime.now().plusDays(7);
         this.isDelivered = false;
-        this.orderItens = orderItens;
-        this.totalOrderCost = totalOrderCost;
     }
 
 }

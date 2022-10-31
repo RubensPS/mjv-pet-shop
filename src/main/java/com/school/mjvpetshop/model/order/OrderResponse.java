@@ -1,8 +1,7 @@
 package com.school.mjvpetshop.model.order;
 
-import com.school.mjvpetshop.model.product.ProductEntity;
+import com.school.mjvpetshop.model.customer.CustomerEntity;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -11,26 +10,24 @@ public class OrderResponse {
 
     private Long orderId;
 
-    private Long userId;
+    private CustomerEntity customerId;
 
     private ZonedDateTime deliverDeadLine;
 
     private Boolean isDelivered;
 
-    @ManyToMany(mappedBy = "id")
-    @JoinColumn(name = "products")
-    private List<ProductEntity> orderItens;
+    private List<OrderItemResponse> orderItens;
 
-    private Long totalProducts;
+    private Integer totalProducts;
 
     private BigDecimal totalOrderCost;
 
-    public OrderResponse(Long orderId, Long userId, ZonedDateTime deliverDeadLine, Boolean isDelivered, List<ProductEntity> orderItens, Long totalProducts, BigDecimal totalOrderCost) {
+    public OrderResponse(Long orderId, CustomerEntity customerId, ZonedDateTime deliverDeadLine, Boolean isDelivered, List<OrderItemResponse> orderItems, Integer totalProducts, BigDecimal totalOrderCost) {
         this.orderId = orderId;
-        this.userId = userId;
+        this.customerId = customerId;
         this.deliverDeadLine = deliverDeadLine;
         this.isDelivered = isDelivered;
-        this.orderItens = orderItens;
+        this.orderItens = orderItems;
         this.totalProducts = totalProducts;
         this.totalOrderCost = totalOrderCost;
     }
