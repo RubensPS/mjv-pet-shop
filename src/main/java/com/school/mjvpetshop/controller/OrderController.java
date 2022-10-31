@@ -17,7 +17,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/generate/{customerId}")
-    public ResponseEntity<OrderResponse> generateNewOrder(@PathVariable Long customerId) {
+    public ResponseEntity<OrderResponse> generateNewOrder(@PathVariable Long customerId){
         OrderResponse response = orderService.generateNewOrder(customerId);
         return ResponseEntity.ok(response);
     }

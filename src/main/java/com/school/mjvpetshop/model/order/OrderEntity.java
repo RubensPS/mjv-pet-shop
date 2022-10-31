@@ -1,6 +1,7 @@
 package com.school.mjvpetshop.model.order;
 
 import com.school.mjvpetshop.model.customer.CustomerEntity;
+import com.school.mjvpetshop.model.orderItem.OrderItemEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +25,7 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private CustomerEntity customerId;
+    private CustomerEntity customer;
 
     @Column(name = "creation_date")
     private ZonedDateTime creationDate;
@@ -40,11 +42,13 @@ public class OrderEntity {
     @Column(name = "total_cost")
     private BigDecimal totalOrderCost;
 
-    public OrderEntity(Long customerId) {
-        this.customerId = getCustomerId();
+    public OrderEntity(CustomerEntity customer) {
+        this.customer = customer;
         this.creationDate = ZonedDateTime.now();
         this.deliverDeadLine = ZonedDateTime.now().plusDays(7);
         this.isDelivered = false;
+        this.orderItems = new ArrayList<>();
+        this.totalOrderCost = BigDecimal.ZERO;
     }
 
 }

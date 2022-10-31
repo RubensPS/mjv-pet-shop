@@ -50,7 +50,7 @@ public class CustomerEntity {
     @JoinColumn(name = "cart_id")
     private CartEntity cart;
 
-    @OneToMany(mappedBy = "customerId")
+    @OneToMany(mappedBy = "customer")
     private List<OrderEntity> orderId;
 
 
