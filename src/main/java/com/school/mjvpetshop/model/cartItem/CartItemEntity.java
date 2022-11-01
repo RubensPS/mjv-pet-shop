@@ -1,5 +1,6 @@
 package com.school.mjvpetshop.model.cartItem;
 
+import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.product.ProductEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class CartItemEntity {
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
-    private Long cartId;
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
+    private CartEntity cart;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -31,8 +33,8 @@ public class CartItemEntity {
     @Column(name = "quantity")
     private BigDecimal quantity;
 
-    public CartItemEntity(Long cartId, ProductEntity product, BigDecimal quantity) {
-        this.cartId = cartId;
+    public CartItemEntity(CartEntity cart, ProductEntity product, BigDecimal quantity) {
+        this.cart = cart;
         this.product = product;
         this.quantity = quantity;
     }

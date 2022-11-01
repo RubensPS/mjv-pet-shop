@@ -5,6 +5,7 @@ import com.school.mjvpetshop.model.order.OrderEntity;
 import com.school.mjvpetshop.model.orderItem.OrderItemEntity;
 import com.school.mjvpetshop.model.order.OrderResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class OrderDtoConversion {
                 entity.getDeliverDeadLine(),
                 entity.getIsDelivered(),
                 entity.getOrderItems().stream().map(OrderItemDtoConversion::entityToResponse).toList(),
-                entity.getOrderItems().size(),
+                entity.getOrderItems().stream().map(item -> item.getQuantity()).reduce(BigDecimal::add).get(),
                 entity.getTotalOrderCost()
         );
     }

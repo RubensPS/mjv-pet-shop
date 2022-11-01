@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Getter
 @Setter
@@ -20,8 +21,8 @@ public class OrderItemResponse {
     public OrderItemResponse(Long id, Long productId, BigDecimal quantity, BigDecimal productPrice) {
         this.id = id;
         this.productId = productId;
-        this.quantity = quantity;
-        this.productPrice = productPrice;
+        this.quantity = quantity.setScale(0, RoundingMode.HALF_EVEN);
+        this.productPrice = productPrice.setScale(2, RoundingMode.HALF_EVEN);
     }
 
 }

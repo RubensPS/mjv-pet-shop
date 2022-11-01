@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -77,5 +78,13 @@ public class ProductService {
         PageRequest request = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         Page<ProductEntity> pageResult = productRepository.findAll(request);
         return pageResult.map(ProductDtoConversion::entityToResponse);
+    }
+
+    public void updateInventoryfromOrderQuantity(CartItemEntity item) {
+        ProductEntity product = productRepository.findById(item.getProduct()
+                .getId())
+                .orElseThrow(() -> new ProductNotFoundException(String.format("%s doesn't exist in the inventry", item.getProduct().getName())));
+        product.setInventory(product.getInventory().subtract(item.getQuantity()));
+        productRepository.save(product);
     }
 }

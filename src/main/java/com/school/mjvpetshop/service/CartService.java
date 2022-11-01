@@ -55,7 +55,6 @@ public class CartService {
             throw new EmptyCartException("The cart is already empty.");
         }
         cartItemRepository.deleteAll(cartItems);
-        updateTotal(cartId);
         return findCartById(cartId);
     }
 }

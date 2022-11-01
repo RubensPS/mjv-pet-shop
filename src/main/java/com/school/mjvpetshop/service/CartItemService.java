@@ -1,19 +1,24 @@
 package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.dtoConversion.CartItemDtoConversion;
+import com.school.mjvpetshop.exception.cart.CartNotFoundException;
 import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
 import com.school.mjvpetshop.exception.cartItem.CartItemNotFoundException;
 import com.school.mjvpetshop.exception.product.InsuficientInventoryException;
+import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.cartItem.CartItemRequest;
 import com.school.mjvpetshop.model.cartItem.CartItemResponse;
 import com.school.mjvpetshop.model.product.ProductEntity;
 import com.school.mjvpetshop.repository.CartItemRepository;
+import com.school.mjvpetshop.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,14 +28,15 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
     private final ProductService productService;
     private final CartService cartService;
+    private final CartRepository cartRepository;
 
     public CartItemResponse addItem(CartItemRequest request) {
-        cartService.checkCart(request.getCartId());
+        CartEntity cart = cartRepository.findById(request.getCartId()).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
         ProductEntity product = productService.getProductEntity(request.getProductId());
         if (cartItemRepository.existsByCartIdAndProduct(request.getCartId(), product))
             throw new CartItemAlreadyExistsException("The item is already in the cart.");
         checkInventory(request);
-        CartItemEntity entity = cartItemRepository.save(CartItemDtoConversion.requestToEntity(request, product));
+        CartItemEntity entity = cartItemRepository.save(CartItemDtoConversion.requestToEntity(cart, product, request.getQuantity()));
         cartService.updateTotal(request.getCartId());
         return CartItemDtoConversion.entityToResponse(entity);
     }
@@ -73,6 +79,15 @@ public class CartItemService {
     public void checkCartItem(List<Long> shopList, String message) {
         if (shopList.isEmpty())
             throw new CartItemNotFoundException(message);
+    }
+
+    public void checkInventoryItem(CartItemEntity item) {
+        Optional<CartItemEntity> cartItem = cartItemRepository.findById(item.getId());
+        if (cartItem.isEmpty())
+            throw new CartItemNotFoundException("Item not found in database.");
+        if (cartItem.get().getQuantity().compareTo(cartItem.get().getProduct().getInventory()) > 0)
+            throw new InsuficientInventoryException(
+                    String.format("There's not enough %s in the inventory to close the order. Please romeve this item and try again.", cartItem.get().getProduct().getName()));
     }
 
 }

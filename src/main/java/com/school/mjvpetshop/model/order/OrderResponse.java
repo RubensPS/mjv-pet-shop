@@ -23,17 +23,17 @@ public class OrderResponse {
 
     private List<OrderItemResponse> orderItens;
 
-    private Integer totalProducts;
+    private BigDecimal totalProducts;
 
     private BigDecimal totalOrderCost;
 
-    public OrderResponse(Long orderId, Long customerId, ZonedDateTime deliverDeadLine, Boolean isDelivered, List<OrderItemResponse> orderItems, Integer totalProducts, BigDecimal totalOrderCost) {
+    public OrderResponse(Long orderId, Long customerId, ZonedDateTime deliverDeadLine, Boolean isDelivered, List<OrderItemResponse> orderItems, BigDecimal totalProducts, BigDecimal totalOrderCost) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.deliverDeadLine = deliverDeadLine;
         this.isDelivered = isDelivered;
         this.orderItens = orderItems;
-        this.totalProducts = totalProducts;
+        this.totalProducts = totalProducts.setScale(0,RoundingMode.HALF_EVEN);
         this.totalOrderCost = totalOrderCost.setScale(2, RoundingMode.HALF_EVEN);
     }
 
