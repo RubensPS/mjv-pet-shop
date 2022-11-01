@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.ZonedDateTime;
 
 @Setter
@@ -22,7 +23,7 @@ public class ProductResponse {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.inventory = inventory;
+        this.inventory = inventory.setScale(0, RoundingMode.HALF_EVEN);
         this.updateDate = updateDate;
     }
 

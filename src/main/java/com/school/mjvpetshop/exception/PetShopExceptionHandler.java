@@ -9,6 +9,7 @@ import com.school.mjvpetshop.exception.cartItem.ProductIdNotProvidedException;
 import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
 import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
 import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
+import com.school.mjvpetshop.exception.order.OrderNotFoundException;
 import com.school.mjvpetshop.exception.product.InsuficientInventoryException;
 import com.school.mjvpetshop.exception.product.ProductAlreadyExistsException;
 import com.school.mjvpetshop.exception.product.ProductNotFoundException;
@@ -153,6 +154,17 @@ public class PetShopExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
         return new ResponseEntity<>(apiException, ok);
+    }
+
+    @ExceptionHandler(value = OrderNotFoundException.class)
+    public ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException e) {
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+        PetShopApiException apiException = new PetShopApiException(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException, notFound);
     }
 
 }

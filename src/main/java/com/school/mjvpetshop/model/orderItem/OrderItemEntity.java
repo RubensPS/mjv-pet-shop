@@ -1,8 +1,6 @@
-package com.school.mjvpetshop.model.cartItem;
+package com.school.mjvpetshop.model.orderItem;
 
-import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.product.ProductEntity;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,30 +9,26 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "cart_item")
+@Table(name = "order_item")
+@NoArgsConstructor
 @Setter
 @Getter
-@NoArgsConstructor
-public class CartItemEntity {
+public class OrderItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id", nullable = false)
-    private CartEntity cart;
+    private Long orderId;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
-    @Column(name = "quantity")
     private BigDecimal quantity;
 
-    public CartItemEntity(CartEntity cart, ProductEntity product, BigDecimal quantity) {
-        this.cart = cart;
+    public OrderItemEntity(Long orderId, ProductEntity product, BigDecimal quantity) {
+        this.orderId = orderId;
         this.product = product;
         this.quantity = quantity;
     }
