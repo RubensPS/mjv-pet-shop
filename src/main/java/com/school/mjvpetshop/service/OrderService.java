@@ -8,10 +8,14 @@ import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.customer.CustomerEntity;
 import com.school.mjvpetshop.model.order.OrderEntity;
 import com.school.mjvpetshop.model.order.OrderResponse;
+import com.school.mjvpetshop.model.product.ProductEntity;
 import com.school.mjvpetshop.repository.CartItemRepository;
 import com.school.mjvpetshop.repository.CustomerRepository;
 import com.school.mjvpetshop.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -56,5 +60,13 @@ public class OrderService {
         OrderEntity order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("There's no order with the ID provided in the database."));
         order.setIsDelivered(true);
         return OrderDtoConversion.entityToResponse(orderRepository.save(order));
+    }
+
+    public Page<OrderResponse> findAllCustomerOrders(Long customerId, boolean status, Integer pageNumber, Integer pageSize, String sortBy) {
+        if(!customerRepository.existsById(customerId))
+            throw new CustomerNotFoundException("The customer is not in the database.");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Page<OrderEntity> pageResult = orderRepository.findAllByCustomerId(customerId, status, request);
+        return pageResult.map(OrderDtoConversion::entityToResponse);
     }
 }

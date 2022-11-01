@@ -3,6 +3,7 @@ package com.school.mjvpetshop.controller;
 import com.school.mjvpetshop.model.order.OrderResponse;
 import com.school.mjvpetshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,18 @@ public class OrderController {
     @PatchMapping("/deliver/{orderId}")
     public ResponseEntity<OrderResponse>  updateDeliverStatus(@PathVariable Long orderId) {
         OrderResponse response = orderService.updateDeliverStatusToTrue(orderId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/all/{customerId}")
+    public ResponseEntity<Page<OrderResponse>> findAllCustomerOrders(
+            @PathVariable Long customerId,
+            @RequestParam(defaultValue = "false") boolean status,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "3") Integer pageSize,
+            @RequestParam(defaultValue = "creationDate") String sortBy
+    ) {
+        Page<OrderResponse> response = orderService.findAllCustomerOrders(customerId, status, pageNumber, pageSize, sortBy);
         return ResponseEntity.ok(response);
     }
 
