@@ -3,6 +3,7 @@ package com.school.mjvpetshop.service;
 import com.school.mjvpetshop.dtoConversion.OrderDtoConversion;
 import com.school.mjvpetshop.exception.cart.EmptyCartException;
 import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
+import com.school.mjvpetshop.exception.order.OrderNotFoundException;
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
 import com.school.mjvpetshop.model.customer.CustomerEntity;
 import com.school.mjvpetshop.model.order.OrderEntity;
@@ -51,4 +52,9 @@ public class OrderService {
         cartItems.forEach(productService::updateInventoryfromOrderQuantity);
     }
 
+    public OrderResponse updateDeliverStatusToTrue(Long orderId) {
+        OrderEntity order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("There's no order with the ID provided in the database."));
+        order.setIsDelivered(true);
+        return OrderDtoConversion.entityToResponse(orderRepository.save(order));
+    }
 }
