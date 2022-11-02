@@ -29,19 +29,20 @@ public class CartService {
         return entityToResponse(entity);
     }
 
-    public void updateTotal(Long cartId) {
+    public BigDecimal updateTotal(Long cartId) {
         CartEntity entity = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException("A cart with the provided ID doesn't exist in the database."));
         Set<CartItemEntity> itemList = entity.getItems();
         if (itemList.isEmpty()) {
             entity.setTotalShopValue(BigDecimal.ZERO);
-            cartRepository.save(entity);
-            return;
+            CartEntity emptyCart = cartRepository.save(entity);
+            return emptyCart.getTotalShopValue();
         }
         BigDecimal total = itemList.stream()
                 .map(item -> item.getProduct().getPrice().multiply(item.getQuantity()))
                 .reduce(BigDecimal::add).orElseThrow(() -> new CartUpdateTotalValueException("Cannot update cart items total value."));
         entity.setTotalShopValue(total);
-        cartRepository.save(entity);
+        CartEntity cart = cartRepository.save(entity);
+        return cart.getTotalShopValue();
     }
 
     public void checkCart(Long id) {
