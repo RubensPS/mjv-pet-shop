@@ -1,6 +1,5 @@
 package com.school.mjvpetshop.service;
 
-import com.school.mjvpetshop.dtoConversion.CustomerDtoConversion;
 import com.school.mjvpetshop.exception.customer.CustomerAlreadyExistsException;
 import com.school.mjvpetshop.exception.customer.CustomerNotFoundException;
 import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
@@ -13,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -27,18 +27,19 @@ public class CustomerService {
             throw new InvalidCustomerCpfException("The cpf must contain 11 digits.");
         if (customerRepository.existsByCpf(request.getCpf()) || customerRepository.existsByUserName(request.getUserName()) || customerRepository.existsByEmail(request.getEmail()))
             throw new CustomerAlreadyExistsException("Cpf, userName or email already in database.");
-        CustomerEntity entity = CustomerDtoConversion.requestToEntity(request);
-        return CustomerDtoConversion.entityToResponse(customerRepository.save(entity));
+        CustomerEntity entity = requestToEntity(request);
+        return entityToResponse(customerRepository.save(entity));
     }
 
     public CustomerResponse findCustomerById(Long id) {
         CustomerEntity entity = customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerNotFoundException("A customer with the provided ID doesn't exist in the database."));
-        return CustomerDtoConversion.entityToResponse(entity);
+        return entityToResponse(entity);
     }
 
     public List<CustomerResponse> findAllCustomers() {
-        return customerRepository.findAll().stream().map(CustomerDtoConversion::entityToResponse).toList();
+        List<CustomerEntity> responses = customerRepository.findAll();
+        return responses.stream().map(this::entityToResponse).toList();
     }
 
     public ResponseEntity<String> deleteCustomer(Long id) {
@@ -53,7 +54,32 @@ public class CustomerService {
             throw new InvalidCustomerCpfException("The cpf must contain 11 digits.");
         CustomerEntity entity = customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerNotFoundException("A customer with the provided ID doesn't exist in the database."));
-        CustomerEntity updatedEntity = CustomerDtoConversion.updateEntity(entity, request);
-        return CustomerDtoConversion.entityToResponse(customerRepository.save(updatedEntity));
+        CustomerEntity updatedEntity = updateEntity(entity, request);
+        return entityToResponse(customerRepository.save(updatedEntity));
+    }
+
+    public CustomerEntity requestToEntity(CustomerRequest request) {
+        return new CustomerEntity(request.getFullName(), request.getUserName(), request.getCpf(), request.getEmail());
+    }
+
+    public CustomerResponse entityToResponse(CustomerEntity entity) {
+        return new CustomerResponse(
+                entity.getId(),
+                entity.getFullName(),
+                entity.getUserName(),
+                entity.getCpf(),
+                entity.getEmail(),
+                entity.getCreationDate(),
+                entity.getUpdateDate(),
+                entity.getCart().getId());
+    }
+
+    public CustomerEntity updateEntity(CustomerEntity entity, CustomerRequest request) {
+        entity.setCpf(request.getCpf());
+        entity.setUserName(request.getUserName());
+        entity.setFullName(request.getFullName());
+        entity.setEmail(request.getEmail());
+        entity.setUpdateDate(ZonedDateTime.now());
+        return entity;
     }
 }
