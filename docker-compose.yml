@@ -1,0 +1,27 @@
+services:
+  mjv-pet-shop:
+    build: ~/IdeaProjects/mjv-pet-shop
+    image: mjv-pet-shop-image
+    container_name: mjv-pet-shop-container
+    ports:
+      - 8080:8080
+    depends_on:
+      - mjv-mysql
+    networks:
+      mjv-network:
+        aliases:
+          - mjv-pet-shop-service
+  mjv-mysql:
+    image: mysql:latest
+    container_name: mjv-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mjv_pet_shop
+    networks:
+      mjv-network:
+        aliases:
+          - mjv-mysql
+networks:
+  mjv-network:
+    name: mjv-network
+    driver: bridge
