@@ -6,7 +6,6 @@ import com.school.mjvpetshop.model.customer.CustomerRequest;
 import com.school.mjvpetshop.model.customer.CustomerResponse;
 import com.school.mjvpetshop.repository.CustomerRepository;
 
-import com.school.mjvpetshop.service.CustomerService;
 import org.junit.jupiter.api.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
