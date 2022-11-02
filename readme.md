@@ -1,7 +1,8 @@
 # MJV Pet Shop API
 
-API destinada a gerenciar os recursos de uma loja de venda de produtos para pets.
+API destinada a manipular os recursos de uma loja de venda de produtos para pets.
 A API foi baseada na arquitetura REST, com protocolo HTTP e requisições em formato JSON.
+
 ###Tecnologias utilizadas
 
 * Jdk 17
@@ -29,7 +30,8 @@ A API foi baseada na arquitetura REST, com protocolo HTTP e requisições em for
 | service    | classes contendo as regras de negócio da API                                  |
 | repository | pacote das interfaces de acesso ao bando de dados. Utilizam o spring data jpa |
 
-### Funcionalidades principaos
+### Funcionalidades principais
+
 * Adição de clientes;
 * Adição de produtos;
 * Adição de itens no carrinho do cliente;
@@ -38,6 +40,7 @@ A API foi baseada na arquitetura REST, com protocolo HTTP e requisições em for
 * Busca de ordens de compra por cliente com paginação
 
 ### Instalação
+
 1. Sem containerização
     * Faça o clone do projeto no github;
     * Crie uma database de nome mjv_pet_shop utilizando o MySQL;
@@ -57,7 +60,7 @@ A API foi baseada na arquitetura REST, com protocolo HTTP e requisições em for
      utilize um http client como Insomnia ou Postman.
 
 ### Requisições
-Todas as requisições est'ao documentadas no swagger.
+Todas as requisições estão documentadas no swagger.
 <br>Após a inicialização da API, acesse o link:
 <br> http://localhost:8080/swagger-ui.html
 
