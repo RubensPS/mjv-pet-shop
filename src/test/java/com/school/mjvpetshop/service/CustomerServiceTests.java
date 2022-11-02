@@ -1,4 +1,4 @@
-package com.school.mjvpetshop;
+package com.school.mjvpetshop.service;
 
 import com.school.mjvpetshop.exception.customer.InvalidCustomerCpfException;
 import com.school.mjvpetshop.model.customer.CustomerEntity;
@@ -18,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -37,15 +34,20 @@ class CustomerServiceTests {
     @InjectMocks
     private CustomerService customerService;
 
+    private CustomerEntity customerEntity;
+    private CustomerEntity customerUpdated;
+
     @BeforeAll
     void init() {
         MockitoAnnotations.openMocks(this);
     }
 
-    private CustomerEntity customerEntity = new CustomerEntity(1L,"Rubens Souza", "rps", "12345678900", "rps@email.com");
-    private CustomerEntity customerUpdated = new CustomerEntity("Nome Alterado", "souza", "12345678900", "rps@email.com");
-    private CustomerResponse customerResponse = new CustomerResponse(
-            1L, "Rubens Souza", "rps", "12345678900", "rps@email.com", ZonedDateTime.now(), ZonedDateTime.now(), 1L);
+    @BeforeEach
+    void setup() {
+        customerEntity = new CustomerEntity(1L,"Rubens Souza", "rps", "12345678900", "rps@email.com");
+        customerUpdated = new CustomerEntity("Nome Alterado", "souza", "12345678900", "rps@email.com");
+    }
+
 
     @DisplayName("unit test for saveNewCustomer service ")
     @Test
@@ -55,6 +57,7 @@ class CustomerServiceTests {
         given(customerRepository.existsByUserName(request.getUserName())).willReturn(false);
         given(customerRepository.existsByEmail(request.getEmail())).willReturn(false);
         given(customerRepository.save(any(CustomerEntity.class))).willReturn(customerEntity);
+        customerService = new CustomerService(customerRepository);
         CustomerResponse response = customerService.saveNewCustomer(request);
 
         assertNotNull(response);
@@ -64,9 +67,8 @@ class CustomerServiceTests {
     @DisplayName("unit test for findCustomerById service ")
     @Test
     void givenCustomerId_whenFindCustomerById_thenReturnCustomerResponse() {
-        when(customerService.findCustomerById(customerEntity.getId())).thenReturn(customerService.entityToResponse(customerEntity));
-        when(customerService.requestToEntity(any(CustomerRequest.class))).thenReturn(customerEntity);
-        when(customerService.entityToResponse(any(CustomerEntity.class))).thenReturn(customerResponse);
+        when(customerRepository.findById(customerEntity.getId())).thenReturn(Optional.of(customerEntity));
+        customerService = new CustomerService(customerRepository);
         CustomerResponse response = customerService.findCustomerById(customerEntity.getId());
 
         assertEquals("Rubens Souza", response.getFullName());
@@ -79,6 +81,7 @@ class CustomerServiceTests {
     @Test
     void givenNothing_whenFindAll_thenReturnListOfCustomerResponse() {
         when(customerRepository.findAll()).thenReturn(List.of(customerEntity));
+        customerService = new CustomerService(customerRepository);
         List<CustomerResponse> responses = customerService.findAllCustomers();
 
         assertEquals(1, responses.size());
@@ -90,6 +93,8 @@ class CustomerServiceTests {
     @DisplayName("unit test for deleteCustomer service ")
     @Test
     void givenCustomerId_whenDeleteUser_thenReturnResponseEntityOfString() {
+        when(customerRepository.findById(customerEntity.getId())).thenReturn(Optional.of(customerEntity));
+        customerService = new CustomerService(customerRepository);
         ResponseEntity<String> response = customerService.deleteCustomer(customerEntity.getId());
 
         assertFalse(Objects.requireNonNull(response.getBody()).isEmpty());
@@ -103,7 +108,8 @@ class CustomerServiceTests {
         CustomerRequest request = new CustomerRequest("Nome Alterado", "souza", "12345678900", "rps@email.com");
         when(customerRepository.findById(customerEntity.getId())).thenReturn(Optional.of(customerEntity));
         given(customerRepository.save(any(CustomerEntity.class))).willReturn(customerUpdated);
-        CustomerResponse response = customerService.updateCustomer(customerEntity.getId(),request);
+        customerService = new CustomerService(customerRepository);
+        CustomerResponse response = customerService.updateCustomer(customerEntity.getId(), request);
 
         assertEquals("Nome Alterado", response.getFullName());
         assertEquals("souza", response.getUserName());
