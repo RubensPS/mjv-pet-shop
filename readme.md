@@ -3,7 +3,7 @@
 API destinada a manipular os recursos de uma loja de venda de produtos para pets.
 A API foi baseada na arquitetura REST, com protocolo HTTP e requisições em formato JSON.
 
-###Tecnologias utilizadas
+### Tecnologias utilizadas
 
 * Jdk 17
 * Maven
