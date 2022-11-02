@@ -1,10 +1,7 @@
 package com.school.mjvpetshop.model.product;
 
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductEntity {
 
     @Id
