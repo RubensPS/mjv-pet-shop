@@ -47,13 +47,13 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("A product with the provided ID doesn't exist in the database."));
     }
 
-    public ResponseEntity<String> deleteProduct(Long productId) {
-        checkProduct(productId);
-        List<Long> cartItens = findAllCartItemsByProductId(productId);
-        deleteAllCartItemsById(cartItens);
-        productRepository.deleteById(productId);
-        return ResponseEntity.ok("The product was deleted from database.");
-    }
+//    public ResponseEntity<String> deleteProduct(Long productId) {
+//        checkProduct(productId);
+//        List<Long> cartItens = findAllCartItemsByProductId(productId);
+//        deleteAllCartItemsById(cartItens);
+//        productRepository.deleteById(productId);
+//        return ResponseEntity.ok("The product was deleted from database.");
+//    }
 
     public void checkProduct(Long productId) {
         if (!productRepository.existsById(productId))

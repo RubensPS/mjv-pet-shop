@@ -36,10 +36,10 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
-        return productService.deleteProduct(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+//        return productService.deleteProduct(id);
+//    }
 
     @GetMapping("/all")
     public ResponseEntity<Page<ProductResponse>> findAllProducts(
