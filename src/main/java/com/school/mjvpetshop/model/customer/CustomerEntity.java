@@ -3,10 +3,7 @@ package com.school.mjvpetshop.model.customer;
 import com.school.mjvpetshop.model.cart.CartEntity;
 import com.school.mjvpetshop.model.order.OrderEntity;
 import com.school.mjvpetshop.model.telephone.TelephoneEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
@@ -65,4 +62,15 @@ public class CustomerEntity {
         this.cart = new CartEntity();
     }
 
+    public CustomerEntity(Long id, String fullName, String userName, String cpf, String email) {
+        this.id = id;
+        this.fullName = fullName;
+        this.userName = userName;
+        this.cpf = cpf;
+        this.phoneNumbers = new ArrayList<>();
+        this.email = email;
+        this.creationDate = ZonedDateTime.now();
+        this.updateDate = ZonedDateTime.now();
+        this.cart = new CartEntity();
+    }
 }

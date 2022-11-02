@@ -1,6 +1,7 @@
 package com.school.mjvpetshop.model.cart;
 
 import com.school.mjvpetshop.model.cartItem.CartItemEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "cart")
 @Getter
+@AllArgsConstructor
 public class CartEntity {
 
     @Id

@@ -31,12 +31,10 @@ public class CartItemController {
                 productId.orElseThrow(() -> new ProductIdNotProvidedException("productId", "Long", "ProductId not provided.")));
     }
 
-    @PatchMapping("/total")
+    @PatchMapping("/quantity")
     public ResponseEntity<CartItemResponse> changeCartItemQuantity(@RequestBody CartItemRequest request) {
         CartItemResponse response = cartItemService.changeCartItemQuantity(request);
         return ResponseEntity.ok(response);
     }
-
-
 
 }

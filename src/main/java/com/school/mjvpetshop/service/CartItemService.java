@@ -1,6 +1,5 @@
 package com.school.mjvpetshop.service;
 
-import com.school.mjvpetshop.dtoConversion.CartItemDtoConversion;
 import com.school.mjvpetshop.exception.cart.CartNotFoundException;
 import com.school.mjvpetshop.exception.cartItem.CartItemAlreadyExistsException;
 import com.school.mjvpetshop.exception.cartItem.CartItemNotFoundException;
@@ -36,9 +35,9 @@ public class CartItemService {
         if (cartItemRepository.existsByCartIdAndProduct(request.getCartId(), product))
             throw new CartItemAlreadyExistsException("The item is already in the cart.");
         checkInventory(request);
-        CartItemEntity entity = cartItemRepository.save(CartItemDtoConversion.requestToEntity(cart, product, request.getQuantity()));
+        CartItemEntity entity = cartItemRepository.save(requestToEntity(cart, product, request.getQuantity()));
         cartService.updateTotal(request.getCartId());
-        return CartItemDtoConversion.entityToResponse(entity);
+        return entityToResponse(entity);
     }
 
     public ResponseEntity<String> removeItem(Long cartId, Long productId) {
@@ -66,7 +65,7 @@ public class CartItemService {
         Long cartItemId = shopList.get(0);
         CartItemEntity entity = cartItemRepository.findById(cartItemId).orElseThrow(() -> new CartItemNotFoundException("A cartItem with the provided ID doesn't exist in the database."));
         entity.setQuantity(request.getQuantity());
-        CartItemResponse response = CartItemDtoConversion.entityToResponse(cartItemRepository.save(entity));
+        CartItemResponse response = entityToResponse(cartItemRepository.save(entity));
         cartService.updateTotal(request.getCartId());
         return response;
     }
@@ -88,6 +87,14 @@ public class CartItemService {
         if (cartItem.get().getQuantity().compareTo(cartItem.get().getProduct().getInventory()) > 0)
             throw new InsuficientInventoryException(
                     String.format("There's not enough %s in the inventory to close the order. Please romeve this item and try again.", cartItem.get().getProduct().getName()));
+    }
+
+    public CartItemEntity requestToEntity(CartEntity cart, ProductEntity product, BigDecimal quantity) {
+        return new CartItemEntity(cart, product, quantity);
+    }
+
+    public CartItemResponse entityToResponse(CartItemEntity entity) {
+        return new CartItemResponse(entity.getProduct(), entity.getQuantity());
     }
 
 }
