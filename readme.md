@@ -68,6 +68,6 @@ Todas as requisições estão documentadas no swagger.
 ### Testes/Cobertura
 Para acessar o relatório do java code coverage (Jacoco):
 * Comando 'mvn package' para fazer o build da aplicação e rodar os testes ou 'mvn test' apenas para gerar os testes;
-* Abrir no navegador o seguinte relatório gerado após os testes: target/site/jacoco/index.html
+* Abrir no navegador o seguinte relatório gerado após os testes: ~target/site/jacoco/index.html
 
 
