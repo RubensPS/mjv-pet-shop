@@ -65,4 +65,9 @@ Todas as requisições estão documentadas no swagger.
 <br>Após a inicialização da API, acesse o link:
 <br> http://localhost:8080/swagger-ui.html
 
+### Testes/Cobertura
+Para acessar o relatório do java code coverage (Jacoco):
+* Comando 'mvn package' para fazer o build da aplicação e rodar os testes ou 'mvn test' apenas para gerar os testes;
+* Abrir no navegador o seguinte relatório gerado após os testes: target/site/jacoco/index.html
+
 
